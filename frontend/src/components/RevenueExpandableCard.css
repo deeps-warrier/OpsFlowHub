@@ -1,0 +1,92 @@
+.expand-card {
+  background: #020617;
+  border-radius: 14px;
+  padding: 16px;
+  cursor: pointer;
+  border: 1px solid #1e293b;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  color: #e5e7eb;
+}
+
+.expand-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.expand-header h4 {
+  margin: 0;
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+.expand-header p {
+  margin: 6px 0 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.expand-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+  margin-top: 10px;
+}
+
+.expand-card.open .expand-body {
+  max-height: 600px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid #1e293b;
+  color: #ffffff;
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.arrow {
+  transition: transform 0.3s ease;
+}
+
+.arrow.rotate {
+  transform: rotate(180deg);
+}
+
+/* Expandable Card Fix */
+.expand-card p,
+.card.expandable p {
+  color: #ffffff !important;
+  font-weight: 700;
+}
+
+.card.expandable {
+  background: #020617;
+  border: 1px solid #1e293b;
+}
+
+/* FIX: Total Revenue Amount Color */
+.expand-card .amount {
+  color: #ffffff !important;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.expand-card {
+  transform: translateY(10px);
+  opacity: 0;
+  animation: fadeSlide 0.4s ease forwards;
+}
+
+@keyframes fadeSlide {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

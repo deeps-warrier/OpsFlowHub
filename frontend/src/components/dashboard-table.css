@@ -1,0 +1,40 @@
+.revenue{
+  font-weight:600;
+  color:#1e40af;
+}
+
+.op{
+  color:#047857;
+  font-weight:600;
+}
+
+.ip{
+  color:#b45309;
+  font-weight:600;
+}
+
+.pharmacy{
+  color:#7c3aed;
+  font-weight:600;
+}
+
+.lab{
+  color:#0284c7;
+  font-weight:600;
+}
+
+.radiology{
+  color:#dc2626;
+  font-weight:600;
+}
+
+.dashboard-table td{
+  padding:10px;
+  border-bottom:1px solid #eee;
+  text-align:right;
+}
+
+.dashboard-table td:first-child,
+.dashboard-table td:nth-child(2){
+  text-align:left;
+}

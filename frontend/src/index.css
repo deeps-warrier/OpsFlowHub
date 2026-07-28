@@ -1,0 +1,291 @@
+/* ===============================
+   GLOBAL RESET & BASE
+================================ */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #0f172a; /* Deep slate */
+  color: #e5e7eb;
+}
+
+/* ===============================
+   LAYOUT
+================================ */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px 28px 80px;
+}
+
+h1 {
+  font-size: 28px;
+  margin-bottom: 4px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+h2 {
+  font-size: 16px;
+  font-weight: 500;
+  color: #94a3b8;
+  margin-bottom: 24px;
+}
+
+h3 {
+  margin: 0 0 14px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+
+/* ===============================
+   STATUS
+================================ */
+.status {
+  display: inline-block;
+  background: #064e3b;
+  color: #6ee7b7;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-bottom: 20px;
+  border: 1px solid #065f46;
+}
+
+/* ===============================
+   SECTIONS
+================================ */
+.section {
+  margin-bottom: 34px;
+}
+
+/* ===============================
+   CARD GRID
+================================ */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+/* ===============================
+   CARDS
+================================ */
+.card {
+  background: #020617; /* almost black */
+  border-radius: 14px;
+  padding: 18px 18px 16px;
+  border: 1px solid #1e293b;
+  box-shadow:
+    0 10px 20px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+.card h4 {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: #94a3b8;
+}
+
+.card p {
+  margin-top: 10px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+/* ===============================
+   KPI HIGHLIGHT CARDS
+================================ */
+.card.kpi {
+  background: linear-gradient(180deg, #020617, #020617);
+  border-left: 4px solid #2563eb;
+}
+
+/* ===============================
+   CHART CARDS
+================================ */
+.card canvas {
+  margin-top: 10px;
+}
+
+/* ===============================
+   IP SUMMARY BADGE STYLE
+================================ */
+.card-grid .card {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card-grid .card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.45);
+}
+
+/* ===============================
+   DOCTOR LEADERBOARD
+================================ */
+.leaderboard-card {
+  background: #020617;
+  border-radius: 16px;
+  padding: 18px;
+  border: 1px solid #1e293b;
+}
+
+.leader-row {
+  display: grid;
+  grid-template-columns: 40px 1fr 2fr 120px;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #1e293b;
+}
+
+.leader-row:last-child {
+  border-bottom: none;
+}
+
+.rank {
+  font-size: 16px;
+}
+
+.doc-name {
+  font-size: 14px;
+  font-weight: 500;
+  color: #e5e7eb;
+}
+
+.bar {
+  height: 8px;
+  background: #020617;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.bar .fill {
+  height: 100%;
+  background: linear-gradient(90deg, #2563eb, #38bdf8);
+}
+
+.amt {
+  text-align: right;
+  font-weight: 600;
+  color: #f8fafc;
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+@media (max-width: 768px) {
+  .container {
+    padding: 18px;
+  }
+
+  .leader-row {
+    grid-template-columns: 32px 1fr;
+    grid-row-gap: 6px;
+  }
+
+  .bar,
+  .amt {
+    grid-column: 1 / -1;
+  }
+}
+
+.insurance-chart {
+  background: #1f2937;
+  padding: 20px;
+  border-radius: 16px;
+  color: white;
+  transition: all 0.4s ease;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.insurance-chart.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.donut-wrapper {
+  position: relative;
+}
+
+.donut-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  font-size: 18px;
+  color: #facc15;
+}
+
+.donut-segment:hover {
+  filter: drop-shadow(0 0 8px rgba(255,255,255,0.6));
+  cursor: pointer;
+}
+
+.department-card {
+  background: #020617;
+  border-radius: 16px;
+  padding: 18px;
+  border: 1px solid #1e293b;
+}
+
+.department-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #1e293b;
+}
+
+.department-row:last-child {
+  border-bottom: none;
+}
+
+.department-name {
+  font-size: 14px;
+  color: #e5e7eb;
+}
+
+.department-amt {
+  font-weight: 600;
+  color: #38bdf8;
+}
+
+.insurance-grid {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  align-items: stretch;
+}
+
+.insurance-chart {
+  background: #020617;
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.advanced-btn {
+  background: linear-gradient(90deg, #2563eb, #38bdf8);
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.advanced-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4);
+}
