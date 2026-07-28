@@ -15,6 +15,7 @@ import InsurancePieChart from "./components/InsurancePieChart";
 import OPRevenueMixChart from "./components/OPRevenueMixChart";
 import DoctorConversionTable from "./components/DoctorConversionTable";
 
+const API = "https://opsflowhub-backend.onrender.com";
 export default function MainDashboard() {
 
 const navigate = useNavigate()
@@ -88,39 +89,39 @@ productivityRes,
 conversionRes
 ] = await Promise.all([
 
-axios.get("http://127.0.0.1:8000/revenue/kpis"),
-axios.get("http://127.0.0.1:8000/executive/metrics"),
-axios.get("http://127.0.0.1:8000/executive/ip-cards"),
+axios.get("${API}/revenue/kpis"),
+axios.get("${API}/executive/metrics"),
+axios.get("${API}/executive/ip-cards"),
 
-axios.get("http://127.0.0.1:8000/revenue/daily"),
-axios.get("http://127.0.0.1:8000/op/daily"),
-axios.get("http://127.0.0.1:8000/ip/daily"),
+axios.get("${API}/revenue/daily"),
+axios.get("${API}/op/daily"),
+axios.get("${API}/ip/daily"),
 
-axios.get("http://127.0.0.1:8000/revenue/by-doctor"),
-axios.get("http://127.0.0.1:8000/revenue/doctor-trends"),
+axios.get("${API}/revenue/by-doctor"),
+axios.get("${API}/revenue/doctor-trends"),
 
-axios.get("http://127.0.0.1:8000/op/counts"),
+axios.get("${API}/op/counts"),
 
-axios.get("http://127.0.0.1:8000/revenue/top10-departments"),
-axios.get("http://127.0.0.1:8000/revenue/monthly-growth"),
+axios.get("${API}/revenue/top10-departments"),
+axios.get("${API}/revenue/monthly-growth"),
 
-axios.get("http://127.0.0.1:8000/revenue/lab"),
-axios.get("http://127.0.0.1:8000/revenue/radiology"),
+axios.get("${API}/revenue/lab"),
+axios.get("${API}/revenue/radiology"),
 
-axios.get("http://127.0.0.1:8000/revenue/govt-insurance"),
-axios.get("http://127.0.0.1:8000/revenue/health-package"),
-axios.get("http://127.0.0.1:8000/revenue/private-insurance"),
-axios.get("http://127.0.0.1:8000/revenue/international"),
-axios.get("http://127.0.0.1:8000/revenue/fb"),
+axios.get("${API}/revenue/govt-insurance"),
+axios.get("${API}/revenue/health-package"),
+axios.get("${API}/revenue/private-insurance"),
+axios.get("${API}/revenue/international"),
+axios.get("${API}/revenue/fb"),
 
-axios.get("http://127.0.0.1:8000/revenue/pharmacy"),
-axios.get("http://127.0.0.1:8000/revenue/physiotherapy"),
-axios.get("http://127.0.0.1:8000/revenue/homecare"),
+axios.get("${API}/revenue/pharmacy"),
+axios.get("${API}/revenue/physiotherapy"),
+axios.get("${API}/revenue/homecare"),
 
-axios.get("http://127.0.0.1:8000/revenue/run-rate"),
-axios.get("http://127.0.0.1:8000/revenue/op-mix"),
-axios.get("http://127.0.0.1:8000/doctor/productivity"),
-axios.get("http://127.0.0.1:8000/doctor/conversion")
+axios.get("${API}/revenue/run-rate"),
+axios.get("${API}/revenue/op-mix"),
+axios.get("${API}/doctor/productivity"),
+axios.get("${API}/doctor/conversion")
 
 ])
 
