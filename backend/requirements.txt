@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pymongo
+python-multipart
+pandas
+openpyxl
+python-dotenv
+passlib[bcrypt]
+bcrypt
