@@ -87,7 +87,12 @@ runRateRes,
 opMixRes,
 productivityRes,
 conversionRes
-] = await Promise.all([
+] = await allSettled([
+  results.forEach((r, i) => {
+    if (r.status === "rejected") {
+        console.log("FAILED:", i, r.reason.config?.url);
+    }
+});
 
 axios.get(`${API}/revenue/kpis`),
 axios.get(`${API}/executive/metrics`),
