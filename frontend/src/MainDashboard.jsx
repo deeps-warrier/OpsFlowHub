@@ -89,39 +89,39 @@ productivityRes,
 conversionRes
 ] = await Promise.all([
 
-axios.get("${API}/revenue/kpis"),
-axios.get("${API}/executive/metrics"),
-axios.get("${API}/executive/ip-cards"),
+axios.get(`${API}/revenue/kpis`),
+axios.get(`${API}/executive/metrics`),
+axios.get(`${API}/executive/ip-cards`),
 
-axios.get("${API}/revenue/daily"),
-axios.get("${API}/op/daily"),
-axios.get("${API}/ip/daily"),
+axios.get(`${API}/revenue/daily`),
+axios.get(`${API}/op/daily`),
+axios.get(`${API}/ip/daily`),
 
-axios.get("${API}/revenue/by-doctor"),
-axios.get("${API}/revenue/doctor-trends"),
+axios.get(`${API}/revenue/by-doctor`),
+axios.get(`${API}/revenue/doctor-trends`),
 
-axios.get("${API}/op/counts"),
+axios.get(`${API}/op/counts`),
 
-axios.get("${API}/revenue/top10-departments"),
-axios.get("${API}/revenue/monthly-growth"),
+axios.get(`${API}/revenue/top10-departments`),
+axios.get(`${API}/revenue/monthly-growth`),
 
-axios.get("${API}/revenue/lab"),
-axios.get("${API}/revenue/radiology"),
+axios.get(`${API}/revenue/lab`),
+axios.get(`${API}/revenue/radiology`),
 
-axios.get("${API}/revenue/govt-insurance"),
-axios.get("${API}/revenue/health-package"),
-axios.get("${API}/revenue/private-insurance"),
-axios.get("${API}/revenue/international"),
-axios.get("${API}/revenue/fb"),
+axios.get(`${API}/revenue/govt-insurance`),
+axios.get(`${API}/revenue/health-package`),
+axios.get(`${API}/revenue/private-insurance`),
+axios.get(`${API}/revenue/international`),
+axios.get(`${API}/revenue/fb`),
 
-axios.get("${API}/revenue/pharmacy"),
-axios.get("${API}/revenue/physiotherapy"),
-axios.get("${API}/revenue/homecare"),
+axios.get(`${API}/revenue/pharmacy`),
+axios.get(`${API}/revenue/physiotherapy`),
+axios.get(`${API}/revenue/homecare`),
 
-axios.get("${API}/revenue/run-rate"),
-axios.get("${API}/revenue/op-mix"),
-axios.get("${API}/doctor/productivity"),
-axios.get("${API}/doctor/conversion")
+axios.get(`${API}/revenue/run-rate`),
+axios.get(`${API}/revenue/op-mix`),
+axios.get(`${API}/doctor/productivity`),
+axios.get(`${API}/doctor/conversion`)
 
 ])
 
@@ -190,7 +190,7 @@ return (
 
 <button
 className="advanced-btn"
-onClick={()=>navigate("/advanced")}
+onClick={()=>navigate("/advanced`)}
 >
 Advanced View
 </button>
