@@ -58,8 +58,11 @@ from revenue_logic import (
 app = FastAPI(title="OpsFlowHub Backend")
 
 app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
+   CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "https://ops-flow-hub.vercel.app",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
