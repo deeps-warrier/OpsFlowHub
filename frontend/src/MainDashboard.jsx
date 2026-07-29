@@ -190,7 +190,7 @@ return (
 
 <button
 className="advanced-btn"
-onClick={()=>navigate("/advanced`)}
+onClick={() => navigate("/advanced")}
 >
 Advanced View
 </button>
