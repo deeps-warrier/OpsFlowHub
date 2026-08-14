@@ -64,62 +64,69 @@ useEffect(() => {
         const requests = [
 
             axios.get(`${API}/revenue/kpis`),
-
             axios.get(`${API}/executive/metrics`),
-
             axios.get(`${API}/executive/ip-cards`),
-
             axios.get(`${API}/revenue/daily`),
-
             axios.get(`${API}/op/daily`),
 
             axios.get(`${API}/ip/daily`),
-
             axios.get(`${API}/revenue/by-doctor`),
-
             axios.get(`${API}/revenue/doctor-trends`),
-
             axios.get(`${API}/op/counts`),
-
             axios.get(`${API}/revenue/top10-departments`),
 
             axios.get(`${API}/revenue/monthly-growth`),
-
             axios.get(`${API}/revenue/lab`),
-
             axios.get(`${API}/revenue/radiology`),
-
             axios.get(`${API}/revenue/govt-insurance`),
-
             axios.get(`${API}/revenue/health-package`),
 
             axios.get(`${API}/revenue/private-insurance`),
-
             axios.get(`${API}/revenue/international`),
-
             axios.get(`${API}/revenue/fb`),
-
             axios.get(`${API}/revenue/pharmacy`),
-
             axios.get(`${API}/revenue/physiotherapy`),
 
             axios.get(`${API}/revenue/homecare`),
-
             axios.get(`${API}/revenue/run-rate`),
-
             axios.get(`${API}/revenue/op-mix`),
-
             axios.get(`${API}/doctor/productivity`),
-
             axios.get(`${API}/doctor/conversion`)
 
         ];
 
 
-        const results = await Promise.allSettled(requests);
+        /*
+         * IMPORTANT
+         *
+         * Do NOT hit all 25 APIs simultaneously.
+         * Render + MongoDB can become overloaded.
+         *
+         * Process 5 APIs at a time.
+         */
+
+        const results = [];
+
+        for (let i = 0; i < requests.length; i += 5) {
+
+            const batch = requests.slice(i, i + 5);
+
+            console.log(
+                `OpsFlowHub: loading APIs ${i + 1} to ${Math.min(i + 5, requests.length)}`
+            );
+
+            const batchResults = await Promise.allSettled(batch);
+
+            results.push(...batchResults);
+
+        }
 
 
-        results.forEach((result,index) => {
+        /*
+         * Show failed APIs
+         */
+
+        results.forEach((result, index) => {
 
             if (result.status === "rejected") {
 
@@ -136,7 +143,11 @@ useEffect(() => {
         });
 
 
-        const data = (index,fallback=null) => {
+        /*
+         * Helper
+         */
+
+        const data = (index, fallback = null) => {
 
             if (results[index]?.status === "fulfilled") {
 
@@ -149,6 +160,10 @@ useEffect(() => {
         };
 
 
+        /*
+         * Set dashboard data
+         */
+
         setKpis(data(0));
 
         setExec(data(1));
@@ -156,64 +171,114 @@ useEffect(() => {
         setIpCards(data(2));
 
 
-        setDailyRevenue(data(3,[]));
+        setDailyRevenue(
+            data(3, []) || []
+        );
 
-        setOpDaily(data(4,[]));
+        setOpDaily(
+            data(4, []) || []
+        );
 
-        setIpDaily(data(5,[]));
-
-
-        setDoctorRev(data(6,{}) || {});
-
-        setDoctorTrend(data(7,{}) || {});
-
-
-        setOpCounts(data(8));
-
-        setDeptTop(data(9));
-
-        setMonthlyGrowth(data(10));
+        setIpDaily(
+            data(5, []) || []
+        );
 
 
-        setLabData(data(11));
+        setDoctorRev(
+            data(6, {}) || {}
+        );
 
-        setRadiologyData(data(12));
-
-
-        setGovtData(data(13));
-
-        setHealthData(data(14));
-
-        setPrivateData(data(15));
-
-        setIntlData(data(16));
-
-        setFbData(data(17));
+        setDoctorTrend(
+            data(7, {}) || {}
+        );
 
 
-        setPharmacyData(data(18));
+        setOpCounts(
+            data(8)
+        );
 
-        setPhysioData(data(19));
+        setDeptTop(
+            data(9)
+        );
 
-        setHomeCareData(data(20));
+        setMonthlyGrowth(
+            data(10)
+        );
 
 
-        setRunRate(data(21));
+        setLabData(
+            data(11)
+        );
 
-        setOpMix(data(22));
+        setRadiologyData(
+            data(12)
+        );
 
 
-        setDoctorProductivity(data(23,[]) || []);
+        setGovtData(
+            data(13)
+        );
 
-        setDoctorConversion(data(24,[]) || []);
+        setHealthData(
+            data(14)
+        );
 
+        setPrivateData(
+            data(15)
+        );
+
+        setIntlData(
+            data(16)
+        );
+
+        setFbData(
+            data(17)
+        );
+
+
+        setPharmacyData(
+            data(18)
+        );
+
+        setPhysioData(
+            data(19)
+        );
+
+        setHomeCareData(
+            data(20)
+        );
+
+
+        setRunRate(
+            data(21)
+        );
+
+        setOpMix(
+            data(22)
+        );
+
+
+        setDoctorProductivity(
+            data(23, []) || []
+        );
+
+        setDoctorConversion(
+            data(24, []) || []
+        );
+
+
+        /*
+         * Backend status
+         */
 
         const successfulRequests = results.filter(
             result => result.status === "fulfilled"
         ).length;
 
 
-        setBackendOk(successfulRequests > 0);
+        setBackendOk(
+            successfulRequests > 0
+        );
 
 
         console.log(
