@@ -61,81 +61,36 @@ useEffect(() => {
 
     async function loadDashboard() {
 
-        const requests = [
+        /*
+         * ==========================================
+         * STAGE 1
+         * FAST / ESSENTIAL DASHBOARD APIs
+         * ==========================================
+         */
 
+        const fastRequests = [
             axios.get(`${API}/revenue/kpis`),
-            axios.get(`${API}/executive/metrics`),
             axios.get(`${API}/executive/ip-cards`),
             axios.get(`${API}/revenue/daily`),
             axios.get(`${API}/op/daily`),
-
             axios.get(`${API}/ip/daily`),
-            axios.get(`${API}/revenue/by-doctor`),
             axios.get(`${API}/revenue/doctor-trends`),
-            axios.get(`${API}/op/counts`),
-            axios.get(`${API}/revenue/top10-departments`),
-
-            axios.get(`${API}/revenue/monthly-growth`),
-            axios.get(`${API}/revenue/lab`),
-            axios.get(`${API}/revenue/radiology`),
-            axios.get(`${API}/revenue/govt-insurance`),
-            axios.get(`${API}/revenue/health-package`),
-
-            axios.get(`${API}/revenue/private-insurance`),
-            axios.get(`${API}/revenue/international`),
-            axios.get(`${API}/revenue/fb`),
-            axios.get(`${API}/revenue/pharmacy`),
-            axios.get(`${API}/revenue/physiotherapy`),
-
-            axios.get(`${API}/revenue/homecare`),
-            axios.get(`${API}/revenue/run-rate`),
-            axios.get(`${API}/revenue/op-mix`),
-            axios.get(`${API}/doctor/productivity`),
-            axios.get(`${API}/doctor/conversion`)
-
+            axios.get(`${API}/op/counts`)
         ];
 
 
-        /*
-         * IMPORTANT
-         *
-         * Do NOT hit all 25 APIs simultaneously.
-         * Render + MongoDB can become overloaded.
-         *
-         * Process 5 APIs at a time.
-         */
-
-        const results = [];
-
-        for (let i = 0; i < requests.length; i += 2) {
-
-            const batch = requests.slice(i, i + 2);
-
-            console.log(
-                `OpsFlowHub: loading APIs ${i + 1} to ${Math.min(i + 2, requests.length)}`
-            );
-
-            const batchResults = await Promise.allSettled(batch);
-
-            results.push(...batchResults);
-
-        }
+        const fastResults = await Promise.allSettled(fastRequests);
 
 
-        /*
-         * Show failed APIs
-         */
-
-        results.forEach((result, index) => {
+        fastResults.forEach((result, index) => {
 
             if (result.status === "rejected") {
 
                 console.error(
-                    "FAILED API:",
+                    "FAST API FAILED:",
                     index,
                     result.reason?.config?.url ||
-                    result.reason?.message ||
-                    result.reason
+                    result.reason?.message
                 );
 
             }
@@ -143,16 +98,10 @@ useEffect(() => {
         });
 
 
-        /*
-         * Helper
-         */
+        const fastData = (index, fallback = null) => {
 
-        const data = (index, fallback = null) => {
-
-            if (results[index]?.status === "fulfilled") {
-
-                return results[index].value.data;
-
+            if (fastResults[index]?.status === "fulfilled") {
+                return fastResults[index].value.data;
             }
 
             return fallback;
@@ -161,128 +110,454 @@ useEffect(() => {
 
 
         /*
-         * Set dashboard data
+         * ==========================================
+         * SET FAST DATA
+         * ==========================================
          */
 
-        setKpis(data(0));
+        setKpis(
+            fastData(0)
+        );
 
-        setExec(data(1));
-
-        setIpCards(data(2));
-
+        setIpCards(
+            fastData(1)
+        );
 
         setDailyRevenue(
-            data(3, []) || []
+            fastData(2, []) || []
         );
 
         setOpDaily(
-            data(4, []) || []
+            fastData(3, []) || []
         );
 
         setIpDaily(
-            data(5, []) || []
-        );
-
-
-        setDoctorRev(
-            data(6, {}) || {}
+            fastData(4, []) || []
         );
 
         setDoctorTrend(
-            data(7, {}) || {}
+            fastData(5, {}) || {}
         );
-
 
         setOpCounts(
-            data(8)
-        );
-
-        setDeptTop(
-            data(9)
-        );
-
-        setMonthlyGrowth(
-            data(10)
-        );
-
-
-        setLabData(
-            data(11)
-        );
-
-        setRadiologyData(
-            data(12)
-        );
-
-
-        setGovtData(
-            data(13)
-        );
-
-        setHealthData(
-            data(14)
-        );
-
-        setPrivateData(
-            data(15)
-        );
-
-        setIntlData(
-            data(16)
-        );
-
-        setFbData(
-            data(17)
-        );
-
-
-        setPharmacyData(
-            data(18)
-        );
-
-        setPhysioData(
-            data(19)
-        );
-
-        setHomeCareData(
-            data(20)
-        );
-
-
-        setRunRate(
-            data(21)
-        );
-
-        setOpMix(
-            data(22)
-        );
-
-
-        setDoctorProductivity(
-            data(23, []) || []
-        );
-
-        setDoctorConversion(
-            data(24, []) || []
+            fastData(6)
         );
 
 
         /*
-         * Backend status
+         * Dashboard is already usable
          */
 
-        const successfulRequests = results.filter(
-            result => result.status === "fulfilled"
-        ).length;
-
-
-        setBackendOk(
-            successfulRequests > 0
-        );
+        setBackendOk(true);
 
 
         console.log(
-            `OpsFlowHub: ${successfulRequests}/${results.length} API calls successful`
+            "OpsFlowHub: Fast dashboard loaded"
+        );
+
+
+        /*
+         * ==========================================
+         * STAGE 2
+         * EXECUTIVE METRICS
+         * ==========================================
+         */
+
+        try {
+
+            const response =
+                await axios.get(`${API}/executive/metrics`);
+
+            setExec(response.data);
+
+        } catch (error) {
+
+            console.error(
+                "Executive metrics failed:",
+                error?.config?.url ||
+                error?.message
+            );
+
+        }
+
+
+        /*
+         * ==========================================
+         * STAGE 3
+         * DOCTOR / DEPARTMENT
+         * ==========================================
+         */
+
+        try {
+
+            const response =
+                await axios.get(`${API}/revenue/by-doctor`);
+
+            setDoctorRev(
+                response.data || {}
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Doctor revenue failed:",
+                error?.config?.url ||
+                error?.message
+            );
+
+        }
+
+
+        try {
+
+            const response =
+                await axios.get(`${API}/revenue/top10-departments`);
+
+            setDeptTop(
+                response.data || null
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Department revenue failed:",
+                error?.config?.url ||
+                error?.message
+            );
+
+        }
+
+
+        /*
+         * ==========================================
+         * STAGE 4
+         * MONTHLY
+         * ==========================================
+         */
+
+        try {
+
+            const response =
+                await axios.get(`${API}/revenue/monthly-growth`);
+
+            setMonthlyGrowth(
+                response.data || null
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Monthly growth failed:",
+                error?.config?.url ||
+                error?.message
+            );
+
+        }
+
+
+        /*
+         * ==========================================
+         * STAGE 5
+         * REVENUE BLOCKS
+         * ==========================================
+         */
+
+        try {
+
+            const response =
+                await axios.get(`${API}/revenue/lab`);
+
+            setLabData(
+                response.data || null
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Lab revenue failed:",
+                error?.config?.url ||
+                error?.message
+            );
+
+        }
+
+
+        try {
+
+            const response =
+                await axios.get(`${API}/revenue/radiology`);
+
+            setRadiologyData(
+                response.data || null
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Radiology revenue failed:",
+                error?.config?.url ||
+                error?.message
+            );
+
+        }
+
+
+        try {
+
+            const response =
+                await axios.get(`${API}/revenue/pharmacy`);
+
+            setPharmacyData(
+                response.data || null
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Pharmacy revenue failed:",
+                error?.config?.url ||
+                error?.message
+            );
+
+        }
+
+
+        try {
+
+            const response =
+                await axios.get(`${API}/revenue/physiotherapy`);
+
+            setPhysioData(
+                response.data || null
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Physiotherapy revenue failed:",
+                error?.config?.url ||
+                error?.message
+            );
+
+        }
+
+
+        try {
+
+            const response =
+                await axios.get(`${API}/revenue/homecare`);
+
+            setHomeCareData(
+                response.data || null
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Homecare revenue failed:",
+                error?.config?.url ||
+                error?.message
+            );
+
+        }
+
+
+        /*
+         * ==========================================
+         * STAGE 6
+         * INSURANCE / OTHER REVENUE
+         * ==========================================
+         */
+
+        try {
+
+            const response =
+                await axios.get(`${API}/revenue/govt-insurance`);
+
+            setGovtData(
+                response.data || null
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Government insurance failed:",
+                error?.config?.url ||
+                error?.message
+            );
+
+        }
+
+
+        try {
+
+            const response =
+                await axios.get(`${API}/revenue/private-insurance`);
+
+            setPrivateData(
+                response.data || null
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Private insurance failed:",
+                error?.config?.url ||
+                error?.message
+            );
+
+        }
+
+
+        try {
+
+            const response =
+                await axios.get(`${API}/revenue/health-package`);
+
+            setHealthData(
+                response.data || null
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Health package failed:",
+                error?.config?.url ||
+                error?.message
+            );
+
+        }
+
+
+        try {
+
+            const response =
+                await axios.get(`${API}/revenue/international`);
+
+            setIntlData(
+                response.data || null
+            );
+
+        } catch (error) {
+
+            console.error(
+                "International revenue failed:",
+                error?.config?.url ||
+                error?.message
+            );
+
+        }
+
+
+        try {
+
+            const response =
+                await axios.get(`${API}/revenue/fb`);
+
+            setFbData(
+                response.data || null
+            );
+
+        } catch (error) {
+
+            console.error(
+                "F&B revenue failed:",
+                error?.config?.url ||
+                error?.message
+            );
+
+        }
+
+
+        /*
+         * ==========================================
+         * STAGE 7
+         * ADVANCED ANALYTICS
+         * ==========================================
+         */
+
+        try {
+
+            const response =
+                await axios.get(`${API}/revenue/run-rate`);
+
+            setRunRate(
+                response.data || null
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Run rate failed:",
+                error?.config?.url ||
+                error?.message
+            );
+
+        }
+
+
+        try {
+
+            const response =
+                await axios.get(`${API}/revenue/op-mix`);
+
+            setOpMix(
+                response.data || null
+            );
+
+        } catch (error) {
+
+            console.error(
+                "OP mix failed:",
+                error?.config?.url ||
+                error?.message
+            );
+
+        }
+
+
+        try {
+
+            const response =
+                await axios.get(`${API}/doctor/productivity`);
+
+            setDoctorProductivity(
+                response.data || []
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Doctor productivity failed:",
+                error?.config?.url ||
+                error?.message
+            );
+
+        }
+
+
+        try {
+
+            const response =
+                await axios.get(`${API}/doctor/conversion`);
+
+            setDoctorConversion(
+                response.data || []
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Doctor conversion failed:",
+                error?.config?.url ||
+                error?.message
+            );
+
+        }
+
+
+        console.log(
+            "OpsFlowHub: Dashboard loading completed"
         );
 
     }
