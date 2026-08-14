@@ -292,56 +292,6 @@ useEffect(() => {
 
 }, []);
 
-setKpis(kpisRes.data)
-setExec(execRes.data)
-setIpCards(ipCardsRes.data)
-
-setDailyRevenue(dailyRevRes.data || [])
-setOpDaily(opRes.data || [])
-setIpDaily(ipRes.data || [])
-
-setDoctorRev(doctorRes.data || {})
-setDoctorTrend(trendRes.data || {})
-setOpCounts(opCountsRes.data || null)
-
-setDeptTop(deptRes.data || null)
-setMonthlyGrowth(growthRes.data || null)
-
-setLabData(labRes.data || null)
-setRadiologyData(radioRes.data || null)
-
-setGovtData(govtRes.data || null)
-setPrivateData(privateRes.data || null)
-
-setHealthData(healthRes.data)
-setIntlData(intlRes.data)
-setFbData(fbRes.data)
-
-setPharmacyData(pharmacyRes.data)
-setPhysioData(physioRes.data)
-setHomeCareData(homeCareRes.data)
-
-setRunRate(runRateRes.data)
-setOpMix(opMixRes.data)
-
-setDoctorProductivity(productivityRes.data || [])
-setDoctorConversion(conversionRes.data || [])
-
-setBackendOk(true)
-
-}catch(err){
-
-console.error("Dashboard load failed",err)
-setBackendOk(false)
-
-}
-
-}
-
-loadDashboard()
-
-},[])
-
 return (
 
 <div className="container">
