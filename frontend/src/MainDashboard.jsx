@@ -16,44 +16,46 @@ import OPRevenueMixChart from "./components/OPRevenueMixChart";
 import DoctorConversionTable from "./components/DoctorConversionTable";
 
 const API = "https://opsflowhub-backend.onrender.com";
+
 export default function MainDashboard() {
 
-const navigate = useNavigate()
+const navigate = useNavigate();
 
-const [backendOk,setBackendOk] = useState(false)
+const [backendOk,setBackendOk] = useState(false);
 
-const [kpis,setKpis] = useState(null)
-const [exec,setExec] = useState(null)
-const [ipCards,setIpCards] = useState(null)
+const [kpis,setKpis] = useState(null);
+const [exec,setExec] = useState(null);
+const [ipCards,setIpCards] = useState(null);
 
-const [dailyRevenue,setDailyRevenue] = useState([])
-const [opDaily,setOpDaily] = useState([])
-const [ipDaily,setIpDaily] = useState([])
+const [dailyRevenue,setDailyRevenue] = useState([]);
+const [opDaily,setOpDaily] = useState([]);
+const [ipDaily,setIpDaily] = useState([]);
 
-const [doctorRev,setDoctorRev] = useState({})
-const [doctorTrend,setDoctorTrend] = useState({})
-const [opCounts,setOpCounts] = useState(null)
+const [doctorRev,setDoctorRev] = useState({});
+const [doctorTrend,setDoctorTrend] = useState({});
+const [opCounts,setOpCounts] = useState(null);
 
-const [deptTop,setDeptTop] = useState(null)
-const [monthlyGrowth,setMonthlyGrowth] = useState(null)
+const [deptTop,setDeptTop] = useState(null);
+const [monthlyGrowth,setMonthlyGrowth] = useState(null);
 
-const [labData,setLabData] = useState(null)
-const [radiologyData,setRadiologyData] = useState(null)
-const [govtData,setGovtData] = useState(null)
-const [privateData,setPrivateData] = useState(null)
-const [healthData,setHealthData] = useState(null)
-const [intlData,setIntlData] = useState(null)
-const [fbData,setFbData] = useState(null)
+const [labData,setLabData] = useState(null);
+const [radiologyData,setRadiologyData] = useState(null);
+const [govtData,setGovtData] = useState(null);
+const [privateData,setPrivateData] = useState(null);
+const [healthData,setHealthData] = useState(null);
+const [intlData,setIntlData] = useState(null);
+const [fbData,setFbData] = useState(null);
 
-const [pharmacyData,setPharmacyData] = useState(null)
-const [physioData,setPhysioData] = useState(null)
-const [homeCareData,setHomeCareData] = useState(null)
+const [pharmacyData,setPharmacyData] = useState(null);
+const [physioData,setPhysioData] = useState(null);
+const [homeCareData,setHomeCareData] = useState(null);
 
-const [runRate,setRunRate] = useState(null)
+const [runRate,setRunRate] = useState(null);
 
-const [opMix,setOpMix] = useState(null)
-const [doctorProductivity,setDoctorProductivity] = useState([])
-const [doctorConversion,setDoctorConversion] = useState([])
+const [opMix,setOpMix] = useState(null);
+const [doctorProductivity,setDoctorProductivity] = useState([]);
+const [doctorConversion,setDoctorConversion] = useState([]);
+
 
 useEffect(() => {
 
@@ -61,98 +63,72 @@ useEffect(() => {
 
         const requests = [
 
-            // 0
             axios.get(`${API}/revenue/kpis`),
 
-            // 1
             axios.get(`${API}/executive/metrics`),
 
-            // 2
             axios.get(`${API}/executive/ip-cards`),
 
-            // 3
             axios.get(`${API}/revenue/daily`),
 
-            // 4
             axios.get(`${API}/op/daily`),
 
-            // 5
             axios.get(`${API}/ip/daily`),
 
-            // 6
             axios.get(`${API}/revenue/by-doctor`),
 
-            // 7
             axios.get(`${API}/revenue/doctor-trends`),
 
-            // 8
             axios.get(`${API}/op/counts`),
 
-            // 9
             axios.get(`${API}/revenue/top10-departments`),
 
-            // 10
             axios.get(`${API}/revenue/monthly-growth`),
 
-            // 11
             axios.get(`${API}/revenue/lab`),
 
-            // 12
             axios.get(`${API}/revenue/radiology`),
 
-            // 13
             axios.get(`${API}/revenue/govt-insurance`),
 
-            // 14
             axios.get(`${API}/revenue/health-package`),
 
-            // 15
             axios.get(`${API}/revenue/private-insurance`),
 
-            // 16
             axios.get(`${API}/revenue/international`),
 
-            // 17
             axios.get(`${API}/revenue/fb`),
 
-            // 18
             axios.get(`${API}/revenue/pharmacy`),
 
-            // 19
             axios.get(`${API}/revenue/physiotherapy`),
 
-            // 20
             axios.get(`${API}/revenue/homecare`),
 
-            // 21
             axios.get(`${API}/revenue/run-rate`),
 
-            // 22
             axios.get(`${API}/revenue/op-mix`),
 
-            // 23
             axios.get(`${API}/doctor/productivity`),
 
-            // 24
             axios.get(`${API}/doctor/conversion`)
+
         ];
 
 
         const results = await Promise.allSettled(requests);
 
 
-        // ==========================================
-        // SHOW FAILED API CALLS IN BROWSER CONSOLE
-        // ==========================================
-
-        results.forEach((result, index) => {
+        results.forEach((result,index) => {
 
             if (result.status === "rejected") {
 
                 console.error(
                     "FAILED API:",
                     index,
-                    result.reason?.config?.url || result.reason?.message
+                    result.reason?.config?.url ||
+                    result.reason?.message ||
+                    result.reason
                 );
 
             }
@@ -160,11 +136,7 @@ useEffect(() => {
         });
 
 
-        // ==========================================
-        // HELPER
-        // ==========================================
-
-        const data = (index, fallback = null) => {
+        const data = (index,fallback=null) => {
 
             if (results[index]?.status === "fulfilled") {
 
@@ -177,10 +149,6 @@ useEffect(() => {
         };
 
 
-        // ==========================================
-        // SET DATA
-        // ==========================================
-
         setKpis(data(0));
 
         setExec(data(1));
@@ -188,122 +156,64 @@ useEffect(() => {
         setIpCards(data(2));
 
 
-        setDailyRevenue(
-            data(3, []) || []
-        );
+        setDailyRevenue(data(3,[]));
 
-        setOpDaily(
-            data(4, []) || []
-        );
+        setOpDaily(data(4,[]));
 
-        setIpDaily(
-            data(5, []) || []
-        );
+        setIpDaily(data(5,[]));
 
 
-        setDoctorRev(
-            data(6, {}) || {}
-        );
+        setDoctorRev(data(6,{}) || {});
 
-        setDoctorTrend(
-            data(7, {}) || {}
-        );
+        setDoctorTrend(data(7,{}) || {});
 
 
-        setOpCounts(
-            data(8)
-        );
+        setOpCounts(data(8));
+
+        setDeptTop(data(9));
+
+        setMonthlyGrowth(data(10));
 
 
-        setDeptTop(
-            data(9)
-        );
+        setLabData(data(11));
+
+        setRadiologyData(data(12));
 
 
-        setMonthlyGrowth(
-            data(10)
-        );
+        setGovtData(data(13));
+
+        setHealthData(data(14));
+
+        setPrivateData(data(15));
+
+        setIntlData(data(16));
+
+        setFbData(data(17));
 
 
-        setLabData(
-            data(11)
-        );
+        setPharmacyData(data(18));
 
-        setRadiologyData(
-            data(12)
-        );
+        setPhysioData(data(19));
+
+        setHomeCareData(data(20));
 
 
-        setGovtData(
-            data(13)
-        );
+        setRunRate(data(21));
 
-        setHealthData(
-            data(14)
-        );
-
-        setPrivateData(
-            data(15)
-        );
-
-        setIntlData(
-            data(16)
-        );
-
-        setFbData(
-            data(17)
-        );
+        setOpMix(data(22));
 
 
-        setPharmacyData(
-            data(18)
-        );
+        setDoctorProductivity(data(23,[]) || []);
 
-        setPhysioData(
-            data(19)
-        );
+        setDoctorConversion(data(24,[]) || []);
 
-        setHomeCareData(
-            data(20)
-        );
-
-
-        setRunRate(
-            data(21)
-        );
-
-        setOpMix(
-            data(22)
-        );
-
-
-        setDoctorProductivity(
-            data(23, []) || []
-        );
-
-        setDoctorConversion(
-            data(24, []) || []
-        );
-
-
-        // ==========================================
-        // BACKEND STATUS
-        // ==========================================
 
         const successfulRequests = results.filter(
-            r => r.status === "fulfilled"
+            result => result.status === "fulfilled"
         ).length;
 
 
-        if (successfulRequests > 0) {
-
-            setBackendOk(true);
-
-        } else {
-
-            setBackendOk(false);
-
-        }
+        setBackendOk(successfulRequests > 0);
 
 
         console.log(
