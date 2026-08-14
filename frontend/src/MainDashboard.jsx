@@ -107,12 +107,12 @@ useEffect(() => {
 
         const results = [];
 
-        for (let i = 0; i < requests.length; i += 5) {
+        for (let i = 0; i < requests.length; i += 2) {
 
-            const batch = requests.slice(i, i + 5);
+            const batch = requests.slice(i, i + 2);
 
             console.log(
-                `OpsFlowHub: loading APIs ${i + 1} to ${Math.min(i + 5, requests.length)}`
+                `OpsFlowHub: loading APIs ${i + 1} to ${Math.min(i + 2, requests.length)}`
             );
 
             const batchResults = await Promise.allSettled(batch);
