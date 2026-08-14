@@ -55,78 +55,267 @@ const [opMix,setOpMix] = useState(null)
 const [doctorProductivity,setDoctorProductivity] = useState([])
 const [doctorConversion,setDoctorConversion] = useState([])
 
-useEffect(()=>{
+useEffect(() => {
 
-async function loadDashboard(){
+    async function loadDashboard() {
 
-try{
+        const requests = [
 
-const [
-kpisRes,
-execRes,
-ipCardsRes,
-dailyRevRes,
-opRes,
-ipRes,
-doctorRes,
-trendRes,
-opCountsRes,
-deptRes,
-growthRes,
-labRes,
-radioRes,
-govtRes,
-healthRes,
-privateRes,
-intlRes,
-fbRes,
-pharmacyRes,
-physioRes,
-homeCareRes,
-runRateRes,
-opMixRes,
-productivityRes,
-conversionRes
-] =  await Promise.all([
-    axios.get(`${API}/revenue/kpis`),
-    axios.get(`${API}/executive/metrics`),
-});
+            // 0
+            axios.get(`${API}/revenue/kpis`),
 
-axios.get(`${API}/revenue/kpis`),
-axios.get(`${API}/executive/metrics`),
-axios.get(`${API}/executive/ip-cards`),
+            // 1
+            axios.get(`${API}/executive/metrics`),
 
-axios.get(`${API}/revenue/daily`),
-axios.get(`${API}/op/daily`),
-axios.get(`${API}/ip/daily`),
+            // 2
+            axios.get(`${API}/executive/ip-cards`),
 
-axios.get(`${API}/revenue/by-doctor`),
-axios.get(`${API}/revenue/doctor-trends`),
+            // 3
+            axios.get(`${API}/revenue/daily`),
 
-axios.get(`${API}/op/counts`),
+            // 4
+            axios.get(`${API}/op/daily`),
 
-axios.get(`${API}/revenue/top10-departments`),
-axios.get(`${API}/revenue/monthly-growth`),
+            // 5
+            axios.get(`${API}/ip/daily`),
 
-axios.get(`${API}/revenue/lab`),
-axios.get(`${API}/revenue/radiology`),
+            // 6
+            axios.get(`${API}/revenue/by-doctor`),
 
-axios.get(`${API}/revenue/govt-insurance`),
-axios.get(`${API}/revenue/health-package`),
-axios.get(`${API}/revenue/private-insurance`),
-axios.get(`${API}/revenue/international`),
-axios.get(`${API}/revenue/fb`),
+            // 7
+            axios.get(`${API}/revenue/doctor-trends`),
 
-axios.get(`${API}/revenue/pharmacy`),
-axios.get(`${API}/revenue/physiotherapy`),
-axios.get(`${API}/revenue/homecare`),
+            // 8
+            axios.get(`${API}/op/counts`),
 
-axios.get(`${API}/revenue/run-rate`),
-axios.get(`${API}/revenue/op-mix`),
-axios.get(`${API}/doctor/productivity`),
-axios.get(`${API}/doctor/conversion`)
+            // 9
+            axios.get(`${API}/revenue/top10-departments`),
 
-])
+            // 10
+            axios.get(`${API}/revenue/monthly-growth`),
+
+            // 11
+            axios.get(`${API}/revenue/lab`),
+
+            // 12
+            axios.get(`${API}/revenue/radiology`),
+
+            // 13
+            axios.get(`${API}/revenue/govt-insurance`),
+
+            // 14
+            axios.get(`${API}/revenue/health-package`),
+
+            // 15
+            axios.get(`${API}/revenue/private-insurance`),
+
+            // 16
+            axios.get(`${API}/revenue/international`),
+
+            // 17
+            axios.get(`${API}/revenue/fb`),
+
+            // 18
+            axios.get(`${API}/revenue/pharmacy`),
+
+            // 19
+            axios.get(`${API}/revenue/physiotherapy`),
+
+            // 20
+            axios.get(`${API}/revenue/homecare`),
+
+            // 21
+            axios.get(`${API}/revenue/run-rate`),
+
+            // 22
+            axios.get(`${API}/revenue/op-mix`),
+
+            // 23
+            axios.get(`${API}/doctor/productivity`),
+
+            // 24
+            axios.get(`${API}/doctor/conversion`)
+        ];
+
+
+        const results = await Promise.allSettled(requests);
+
+
+        // ==========================================
+        // SHOW FAILED API CALLS IN BROWSER CONSOLE
+        // ==========================================
+
+        results.forEach((result, index) => {
+
+            if (result.status === "rejected") {
+
+                console.error(
+                    "FAILED API:",
+                    index,
+                    result.reason?.config?.url || result.reason?.message
+                );
+
+            }
+
+        });
+
+
+        // ==========================================
+        // HELPER
+        // ==========================================
+
+        const data = (index, fallback = null) => {
+
+            if (results[index]?.status === "fulfilled") {
+
+                return results[index].value.data;
+
+            }
+
+            return fallback;
+
+        };
+
+
+        // ==========================================
+        // SET DATA
+        // ==========================================
+
+        setKpis(data(0));
+
+        setExec(data(1));
+
+        setIpCards(data(2));
+
+
+        setDailyRevenue(
+            data(3, []) || []
+        );
+
+        setOpDaily(
+            data(4, []) || []
+        );
+
+        setIpDaily(
+            data(5, []) || []
+        );
+
+
+        setDoctorRev(
+            data(6, {}) || {}
+        );
+
+        setDoctorTrend(
+            data(7, {}) || {}
+        );
+
+
+        setOpCounts(
+            data(8)
+        );
+
+
+        setDeptTop(
+            data(9)
+        );
+
+
+        setMonthlyGrowth(
+            data(10)
+        );
+
+
+        setLabData(
+            data(11)
+        );
+
+        setRadiologyData(
+            data(12)
+        );
+
+
+        setGovtData(
+            data(13)
+        );
+
+        setHealthData(
+            data(14)
+        );
+
+        setPrivateData(
+            data(15)
+        );
+
+        setIntlData(
+            data(16)
+        );
+
+        setFbData(
+            data(17)
+        );
+
+
+        setPharmacyData(
+            data(18)
+        );
+
+        setPhysioData(
+            data(19)
+        );
+
+        setHomeCareData(
+            data(20)
+        );
+
+
+        setRunRate(
+            data(21)
+        );
+
+        setOpMix(
+            data(22)
+        );
+
+
+        setDoctorProductivity(
+            data(23, []) || []
+        );
+
+        setDoctorConversion(
+            data(24, []) || []
+        );
+
+
+        // ==========================================
+        // BACKEND STATUS
+        // ==========================================
+
+        const successfulRequests = results.filter(
+            r => r.status === "fulfilled"
+        ).length;
+
+
+        if (successfulRequests > 0) {
+
+            setBackendOk(true);
+
+        } else {
+
+            setBackendOk(false);
+
+        }
+
+
+        console.log(
+            `OpsFlowHub: ${successfulRequests}/${results.length} API calls successful`
+        );
+
+    }
+
+
+    loadDashboard();
+
+}, []);
 
 setKpis(kpisRes.data)
 setExec(execRes.data)
