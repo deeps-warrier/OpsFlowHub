@@ -5,6 +5,7 @@ import DoctorDepartmentTable from "./components/DoctorDepartmentTable";
 import DepartmentTotalsTable from "./components/DepartmentTotalsTable";
 
 export default function AdvancedDashboard() {
+  const API = "https://opsflowhub-backend.onrender.com";
 
   const [matrix,setMatrix] = useState([])
   const [deptTotals,setDeptTotals] = useState([])
@@ -23,7 +24,7 @@ export default function AdvancedDashboard() {
     try{
 
       const res = await axios.get(
-        "http://127.0.0.1:8000/analytics/filter-options"
+        `${API}/analytics/filter-options`,
       )
 
       setDepartments(res.data.departments || [])
@@ -41,14 +42,14 @@ export default function AdvancedDashboard() {
     try{
 
       const matrixRes = await axios.get(
-        "http://127.0.0.1:8000/analytics/doctor-department-matrix",
+        `${API}/analytics/doctor-department-matrix`,
         {
           params:{ start,end,department,doctor }
         }
       )
 
       const deptRes = await axios.get(
-        "http://127.0.0.1:8000/analytics/department-totals",
+        `${API}/analytics/department-totals`,
         {
           params:{ start,end,department,doctor }
         }
