@@ -285,6 +285,19 @@ h3 {
   transition: all 0.3s ease;
 }
 
+.app-footer {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 35px;
+  padding: 18px 12px;
+  text-align: center;
+  font-size: 12px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+  background: #ffffff;
+  letter-spacing: 0.3px;
+}
+
 .advanced-btn:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4);
