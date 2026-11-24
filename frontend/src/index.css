@@ -8,8 +8,8 @@
 body {
   margin: 0;
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background: #F3F6FA; /* Alice Blue */
-  color: #1E293B;
+  background: #0f172a; /* Deep slate */
+  color: #e5e7eb;
 }
 
 /* ===============================
@@ -31,7 +31,7 @@ h1 {
 h2 {
   font-size: 16px;
   font-weight: 500;
-  color: #2563EB;
+  color: #94a3b8;
   margin-bottom: 24px;
 }
 
@@ -39,7 +39,7 @@ h3 {
   margin: 0 0 14px;
   font-size: 16px;
   font-weight: 600;
-  color: #2563EB;
+  color: #e5e7eb;
 }
 
 /* ===============================
@@ -156,7 +156,7 @@ h3 {
 .doc-name {
   font-size: 14px;
   font-weight: 500;
-  color: #1E293B;
+  color: #e5e7eb;
 }
 
 .bar {
@@ -251,7 +251,7 @@ h3 {
 
 .department-name {
   font-size: 14px;
-  color: #1E293B;
+  color: #e5e7eb;
 }
 
 .department-amt {
